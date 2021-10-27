@@ -1467,6 +1467,23 @@
   dependencies:
     cross-spawn "^6.0.5"
 
+"@flyskywhy/react-native-browser-polyfill@^1.0.1":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@flyskywhy/react-native-browser-polyfill/-/react-native-browser-polyfill-1.0.2.tgz#be5b127cbf2db8a393e7edb487617d5212dbbf5f"
+  integrity sha512-/7t3cBGE6PqSXyGaMFE195GgpkAKh3DCTfoCIRqcxrtcXE9UuxC/IHleDpeyvwBZHLq4lKW5D89W1LJVz5Yv3Q==
+  dependencies:
+    buffer "^5.6.0"
+    fbjs "^1.0.0"
+    text-encoding "^0.7.0"
+    xmldom-qsa "^1.0.3"
+
+"@flyskywhy/react-native-gcanvas@^2.3.7":
+  version "2.3.7"
+  resolved "https://registry.yarnpkg.com/@flyskywhy/react-native-gcanvas/-/react-native-gcanvas-2.3.7.tgz#a76b59736840b4c293930d3e9af1192ee2d73808"
+  integrity sha512-QAo85sV2Wmym9Oh+HMz3nRdd/5xwBOYPeDDBqnlTNTMjyCo5xvznngEsAFxPXxeskUCutCX1c3SI/KrnM7BNJQ==
+  dependencies:
+    "@flyskywhy/react-native-browser-polyfill" "^1.0.1"
+
 "@gar/promisify@^1.0.1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.2.tgz#30aa825f11d438671d585bd44e7fd564535fc210"
@@ -5180,7 +5197,7 @@ buffer@^4.3.0:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-buffer@^5.2.0:
+buffer@^5.2.0, buffer@^5.6.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.7.1.tgz#ba62e7c13133053582197160851a8f648e99eed0"
   integrity sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==
@@ -7570,7 +7587,7 @@ fbjs-scripts@3.0.0:
     semver "^5.1.0"
     through2 "^2.0.0"
 
-fbjs@1.0.0:
+fbjs@1.0.0, fbjs@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-1.0.0.tgz#52c215e0883a3c86af2a7a776ed51525ae8e0a5a"
   integrity sha512-MUgcMEJaFhCaF1QtWGnmq9ZDRAzECTCRAF7O6UZIlAlkTs1SasiX9aP0Iw7wfD2mJ7wDTNfg2w7u5fSCwJk1OA==
@@ -11589,6 +11606,11 @@ number-is-nan@^1.0.0:
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
 
+nwmatcher@^1.4.1:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/nwmatcher/-/nwmatcher-1.4.4.tgz#2285631f34a95f0d0395cd900c96ed39b58f346e"
+  integrity sha512-3iuY4N5dhgMpCUrOVnuAdGrgxVqV2cJpM+XNccjR2DKOB1RUP0aA+wGXEiNziG/UKboFyGBIoKOaNlJxx8bciQ==
+
 nwsapi@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.0.tgz#204879a9e3d068ff2a55139c2c772780681a38b7"
@@ -15258,6 +15280,11 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
+text-encoding@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/text-encoding/-/text-encoding-0.7.0.tgz#f895e836e45990624086601798ea98e8f36ee643"
+  integrity sha512-oJQ3f1hrOnbRLOcwKz0Liq2IcrvDeZRHXhd9RgLrsT+DjWY/nty1Hi7v3dtkaEYbPYe0mUoOfzRrMwfXXwgPUA==
+
 text-table@0.2.0, text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
@@ -16370,6 +16397,13 @@ xmldoc@^1.1.2:
   integrity sha512-ruPC/fyPNck2BD1dpz0AZZyrEwMOrWTO5lDdIXS91rs3wtm4j+T8Rp2o+zoOYkkAxJTZRPOSnOGei1egoRmKMQ==
   dependencies:
     sax "^1.2.1"
+
+xmldom-qsa@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/xmldom-qsa/-/xmldom-qsa-1.0.3.tgz#3b70a440997982aa323f911a8b8c3c7db6a6ff1f"
+  integrity sha1-O3CkQJl5gqoyP5Eai4w8fbam/x8=
+  dependencies:
+    nwmatcher "^1.4.1"
 
 xmldom@~0.5.0:
   version "0.5.0"

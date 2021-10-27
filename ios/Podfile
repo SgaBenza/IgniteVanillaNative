@@ -29,3 +29,6 @@ target 'IgniteVanillaNative' do
     react_native_post_install(installer)
   end
 end
+
+pod "GCanvas", :path => "../node_modules/@flyskywhy/react-native-gcanvas/GCanvas.podspec"
+
