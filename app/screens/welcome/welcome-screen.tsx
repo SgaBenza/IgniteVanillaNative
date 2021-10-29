@@ -10,7 +10,7 @@ import {
   TouchableHighlight,
   Dimensions,
 } from "react-native"
-import { GCanvasView } from "@flyskywhy/react-native-gcanvas"
+// import { GCanvasView } from "@flyskywhy/react-native-gcanvas"
 
 const { height, width } = Dimensions.get("window")
 
@@ -70,27 +70,27 @@ export const WelcomeScreen = () => {
 
   return (
     <View testID="WelcomeScreen" style={{ top: 100 }}>
-      <TouchableHighlight onPress={drawSome}>
+      {/* <TouchableHighlight onPress={drawSome}>
         <Text style={styles.welcome}>A MAMMMt</Text>
-      </TouchableHighlight>
-      <GCanvasView
+      </TouchableHighlight> */}
+      {/* <GCanvasView
         onCanvasCreate={initCanvas}
         onIsReady={(value) => (isGReactTextureViewReady.current = value)}
         style={styles.gcanvas}
-      />
+      /> */}
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  gcanvas: {
-    height: 500,
-    width: 1900,
-    // backgroundColor: '#FF000030', // TextureView doesn't support displaying a background drawable since Android API 24
-  },
-  welcome: {
-    fontSize: 20,
-    marginVertical: 20,
-    textAlign: "center",
-  },
-})
+// const styles = StyleSheet.create({
+//   gcanvas: {
+//     height: 500,
+//     width: 1900,
+//     // backgroundColor: '#FF000030', // TextureView doesn't support displaying a background drawable since Android API 24
+//   },
+//   welcome: {
+//     fontSize: 20,
+//     marginVertical: 20,
+//     textAlign: "center",
+//   },
+// })
