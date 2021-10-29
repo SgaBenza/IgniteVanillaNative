@@ -40,6 +40,7 @@
     "expo-linear-gradient": "^9.2.0",
     "expo-localization": "9.1.0",
     "i18n-js": "3.8.0",
+    "lodash-es": "^4.17.21",
     "mobx": "6.1.8",
     "mobx-react-lite": "3.2.0",
     "mobx-state-tree": "5.0.1",
