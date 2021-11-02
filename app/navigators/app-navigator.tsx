@@ -24,10 +24,10 @@ import { navigationRef } from "./navigation-utilities"
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
 export type NavigatorParamList = {
+  svg: undefined
   welcome: undefined
   demo: undefined
   demoList: undefined
-  svg: undefined
   gcanvas: undefined
 }
 
@@ -42,11 +42,11 @@ const AppStack = () => {
       }}
       initialRouteName="svg"
     >
-      <Stack.Screen name="svg" component={SvgScreen} />
+      <Stack.Screen name="svg" component={SvgScreen} options={{ title: "SVG" }} />
+      <Stack.Screen name="gcanvas" component={GCanvasScreen} options={{ title: "GCANVAS" }}/>
       <Stack.Screen name="welcome" component={WelcomeScreen} />
       <Stack.Screen name="demo" component={DemoScreen} />
       <Stack.Screen name="demoList" component={DemoListScreen} />
-      <Stack.Screen name="gcanvas" component={GCanvasScreen} />
     </Stack.Navigator>
   )
 }

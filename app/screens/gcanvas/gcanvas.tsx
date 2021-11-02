@@ -2,6 +2,7 @@ import React, { FC } from "react"
 import { SafeAreaView, View, Text, Dimensions, StyleSheet, TouchableOpacity } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
+import { GCanvasView } from "@flyskywhy/react-native-gcanvas"
 import { NavigatorParamList } from "../../navigators/app-navigator"
 
 const { height, width } = Dimensions.get("window")
@@ -50,11 +51,11 @@ export const GCanvasScreen: FC<StackScreenProps<NavigatorParamList, "gcanvas">> 
       <TouchableOpacity onPress={drawSome}>
         <Text style={styles.welcome}>Draw</Text>
       </TouchableOpacity>
-      {/* <GCanvasView
+      <GCanvasView
         onCanvasCreate={initCanvas}
         onIsReady={(value) => (isGReactTextureViewReady.current = value)}
         style={styles.gcanvas}
-      /> */}
+      />
     </View>
   )
 })
