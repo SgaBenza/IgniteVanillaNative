@@ -7,8 +7,8 @@
 import React from "react"
 import { useColorScheme } from "react-native"
 import { NavigationContainer, DefaultTheme, DarkTheme } from "@react-navigation/native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { WelcomeScreen, DemoScreen, DemoListScreen, SvgScreen, GCanvasScreen } from "../screens"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { SvgScreen, GCanvasScreen } from "../screens"
 import { navigationRef } from "./navigation-utilities"
 
 /**
@@ -32,22 +32,20 @@ export type NavigatorParamList = {
 }
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createNativeStackNavigator<NavigatorParamList>()
+const Tab = createBottomTabNavigator<NavigatorParamList>()
 
 const AppStack = () => {
   return (
-    <Stack.Navigator
+    <Tab.Navigator
       screenOptions={{
         headerShown: true,
+        tabBarIcon: () => null,
       }}
       initialRouteName="svg"
     >
-      <Stack.Screen name="svg" component={SvgScreen} options={{ title: "SVG" }} />
-      <Stack.Screen name="gcanvas" component={GCanvasScreen} options={{ title: "GCANVAS" }}/>
-      <Stack.Screen name="welcome" component={WelcomeScreen} />
-      <Stack.Screen name="demo" component={DemoScreen} />
-      <Stack.Screen name="demoList" component={DemoListScreen} />
-    </Stack.Navigator>
+      <Tab.Screen name="svg" component={SvgScreen} options={{ title: "SVG" }} />
+      <Tab.Screen name="gcanvas" component={GCanvasScreen} options={{ title: "GCANVAS" }} />
+    </Tab.Navigator>
   )
 }
 
