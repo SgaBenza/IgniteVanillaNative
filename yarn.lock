@@ -5411,6 +5411,11 @@ caniuse-lite@^1.0.30000989, caniuse-lite@^1.0.30001035, caniuse-lite@^1.0.300011
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001271.tgz#0dda0c9bcae2cf5407cd34cac304186616cc83e8"
   integrity sha512-BBruZFWmt3HFdVPS8kceTBIguKxu4f99n5JNp06OlPD/luoAMIaIK5ieV5YjnBLH3Nysai9sxj9rpJj4ZisXOA==
 
+canova@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/canova/-/canova-0.0.3.tgz#7ea98fc5896bd74dd04d5d75703e7d65aa3c6e17"
+  integrity sha512-UcXtCTnIXjvT5n4Kt9/7iwrUabCDOfWxmjaNDcvpAxHXBoevSZROXWvHyLVCoyUiDYFdAdxd6LqwGL1MaNYR6g==
+
 capture-exit@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/capture-exit/-/capture-exit-2.0.0.tgz#fb953bfaebeb781f62898239dabb426d08a509a4"
