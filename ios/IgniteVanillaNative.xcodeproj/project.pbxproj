@@ -145,7 +145,6 @@
 				8D3D2E99D3814D73E5353ACB /* Pods-IgniteVanillaNative-IgniteVanillaNativeTests.debug.xcconfig */,
 				32B04630CC446F19212E357A /* Pods-IgniteVanillaNative-IgniteVanillaNativeTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -644,6 +643,7 @@
 				PRODUCT_NAME = IgniteVanillaNative;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -665,6 +665,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = IgniteVanillaNative;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
