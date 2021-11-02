@@ -18,7 +18,7 @@ const { height, width } = Dimensions.get("window")
 export const WelcomeScreen = () => {
   const isGReactTextureViewReady = React.useRef()
   const canvasRef = React.useRef<any>()
-  const ctxRef = React.useRef<any>()
+  const ctxRef = React.useRef<CanvasRenderingContext2D>()
 
   const initCanvas = (canvas) => {
     if (canvasRef.current) {
@@ -72,7 +72,7 @@ export const WelcomeScreen = () => {
   return (
     <View testID="WelcomeScreen" style={styles.wrapper}>
       <TouchableOpacity onPress={drawSome}>
-        <Text style={styles.welcome}>A MAMMMt</Text>
+        <Text style={styles.welcome}>Draw</Text>
       </TouchableOpacity>
       <GCanvasView
         onCanvasCreate={initCanvas}
