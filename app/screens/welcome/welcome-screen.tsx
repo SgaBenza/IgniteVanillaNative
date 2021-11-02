@@ -11,6 +11,7 @@ import {
   Dimensions,
 } from "react-native"
 import { GCanvasView } from "@flyskywhy/react-native-gcanvas"
+import { TouchableOpacity } from "react-native-gesture-handler"
 
 const { height, width } = Dimensions.get("window")
 
@@ -69,10 +70,10 @@ export const WelcomeScreen = () => {
   }
 
   return (
-    <View testID="WelcomeScreen" style={{ top: 100 }}>
-      <TouchableHighlight onPress={drawSome}>
+    <View testID="WelcomeScreen" style={styles.wrapper}>
+      <TouchableOpacity onPress={drawSome}>
         <Text style={styles.welcome}>A MAMMMt</Text>
-      </TouchableHighlight>
+      </TouchableOpacity>
       <GCanvasView
         onCanvasCreate={initCanvas}
         onIsReady={(value) => (isGReactTextureViewReady.current = value)}
@@ -85,7 +86,7 @@ export const WelcomeScreen = () => {
 const styles = StyleSheet.create({
   gcanvas: {
     height: 500,
-    width: 1900,
+    width,
     // backgroundColor: '#FF000030', // TextureView doesn't support displaying a background drawable since Android API 24
   },
   welcome: {
@@ -93,4 +94,5 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     textAlign: "center",
   },
+  wrapper: { top: 100 },
 })
