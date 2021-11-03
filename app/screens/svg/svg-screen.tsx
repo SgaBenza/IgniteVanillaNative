@@ -97,11 +97,11 @@ export const SvgScreen: FC<StackScreenProps<NavigatorParamList, "svg">> = observ
   return (
     <SafeAreaView style={FULL}>
       <View>
-        <TouchableHighlight onPress={onAction}>
-          <View style={BUTTON}>
+        <View style={BUTTON}>
+          <TouchableHighlight onPress={onAction}>
             <Testo style={BUTTON_TEXT}>ACTION</Testo>
-          </View>
-        </TouchableHighlight>
+          </TouchableHighlight>
+        </View>
         <Svg viewBox={`0 0 ${size} ${size}`}>
           <Rect x={0} y={0} width={size} height={size} fill="orange" />
           <Path d={d(perfect)} stroke="red" strokeWidth={30} opacity={0.3} />

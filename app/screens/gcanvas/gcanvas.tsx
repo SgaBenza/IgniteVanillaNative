@@ -14,7 +14,7 @@ const simplex = new SimplexNoise()
 const vizWidth = width
 const heightWidth = 200
 
-const buildShape = (x: number, shapeWidth) => {
+const buildShape = (x: number, shapeWidth: number) => {
   return (Math.sin(2 * Math.PI * (x / shapeWidth) + Math.PI / 2) * 0.5 + 0.5) * heightWidth
 }
 
@@ -77,7 +77,8 @@ export const GCanvasScreen = () => {
 
     const ctx = ctxRef.current
 
-    if (ctx && AppState.currentState === "active") {
+    // if (ctx && AppState.currentState === "active") {
+    if (ctx) {
       const [left, right] = repetitions[animationState.repetitionIndex]
 
       const leftPoint = left[animationState.pointIndex] ?? last(left)
@@ -145,16 +146,19 @@ export const GCanvasScreen = () => {
   }
 
   React.useEffect(() => {
-    const id = setInterval(draw, 1000 / 60)
-    return () => clearInterval(id)
+    let cancel = false
+
+    const loop = () => {
+      draw()
+      if (!cancel) requestAnimationFrame(loop)
+    }
+    loop()
+
+    return () => (cancel = true)
   }, [])
 
   return (
     <View testID="WelcomeScreen" style={styles.wrapper}>
-      <TouchableOpacity onPress={draw}>
-        <Text style={styles.welcome}>Draw</Text>
-      </TouchableOpacity>
-
       <GCanvasView
         onCanvasCreate={initCanvas}
         onIsReady={(value) => (isGReactTextureViewReady.current = value)}
@@ -168,12 +172,7 @@ const styles = StyleSheet.create({
   gcanvas: {
     height: 500,
     width,
-    // backgroundColor: '#FF000030', // TextureView doesn't support displaying a background drawable since Android API 24
   },
-  welcome: {
-    fontSize: 20,
-    marginVertical: 20,
-    textAlign: "center",
-  },
+
   wrapper: { top: 0 },
 })
