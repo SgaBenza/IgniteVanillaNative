@@ -9,8 +9,6 @@ import { color, MockAnimation, vizHeight, vizWidth } from "../animation.mock"
 import { useIsFocused } from "@react-navigation/core"
 
 const SVG_STYLE: ViewStyle = {
-  borderColor: "black",
-  borderWidth: 1,
   width: vizWidth,
   height: vizHeight,
 }

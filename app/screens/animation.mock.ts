@@ -51,14 +51,22 @@ export const color = {
   right: "#FF97F0",
   track: "#C4C4C4",
 }
-
+type Point = { x: number; y: number }
 interface AnimationState {
   repetitionIndex: number
   pointIndex: number
+
+  leftVisiblePoints: Point[]
+  rightVisiblePoints: Point[]
 }
 
 export const MockAnimation = {
-  initialState: (): AnimationState => ({ pointIndex: 0, repetitionIndex: 0 }),
+  initialState: (): AnimationState => ({
+    pointIndex: 0,
+    repetitionIndex: 0,
+    leftVisiblePoints: [repetitions[0][0][0]],
+    rightVisiblePoints: [repetitions[0][1][0]],
+  }),
 
   computeFrameData: (state: AnimationState) => {
     const [left, right] = repetitions[state.repetitionIndex]
@@ -69,16 +77,16 @@ export const MockAnimation = {
 
     const translateX = Math.max(0, state.pointIndex - track.length) * pointStep
 
-    const rightVisiblePoints = right.slice(0, state.pointIndex)
-    const leftVisiblePoints = left.slice(0, state.pointIndex)
+    // const rightVisiblePoints = right.slice(0, state.pointIndex)
+    // const leftVisiblePoints = left.slice(0, state.pointIndex)
 
     return {
       leftPoint,
       rightPoint,
       trackPoint,
       translateX,
-      rightVisiblePoints,
-      leftVisiblePoints,
+      rightVisiblePoints: state.rightVisiblePoints,
+      leftVisiblePoints: state.leftVisiblePoints,
       track,
     }
   },
@@ -88,11 +96,27 @@ export const MockAnimation = {
 
     const [left, right] = repetitions[state.repetitionIndex]
 
+    newState.pointIndex++
+
     if (newState.pointIndex >= left.length && newState.pointIndex >= right.length) {
+      // Change repetition
       newState.pointIndex = 0
       newState.repetitionIndex = (newState.repetitionIndex + 1) % repetitions.length
+      newState.leftVisiblePoints = [repetitions[newState.repetitionIndex][0][0]]
+      newState.rightVisiblePoints = [repetitions[newState.repetitionIndex][1][0]]
     } else {
-      newState.pointIndex++
+      // Add point
+      newState.leftVisiblePoints.push(left[newState.pointIndex])
+      newState.rightVisiblePoints.push(right[newState.pointIndex])
+
+      newState.leftVisiblePoints.splice(
+        0,
+        Math.max(0, newState.leftVisiblePoints.length - pointsAmount),
+      )
+      newState.rightVisiblePoints.splice(
+        0,
+        Math.max(0, newState.rightVisiblePoints.length - pointsAmount),
+      )
     }
 
     return newState
