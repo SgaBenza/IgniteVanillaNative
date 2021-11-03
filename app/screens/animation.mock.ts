@@ -77,9 +77,6 @@ export const MockAnimation = {
 
     const translateX = Math.max(0, state.pointIndex - track.length) * pointStep
 
-    // const rightVisiblePoints = right.slice(0, state.pointIndex)
-    // const leftVisiblePoints = left.slice(0, state.pointIndex)
-
     return {
       leftPoint,
       rightPoint,

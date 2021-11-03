@@ -20,10 +20,20 @@ const pathLine = line<{ x: number; y: number }>()
   .y((d) => d.y)
   .curve(curveMonotoneX)
 
+const useRender = () => {
+  const [, set] = useState(0)
+  return () => set((i) => i + 1)
+}
+
+function useConst<T>(initial: T): T {
+  return React.useRef(initial).current
+}
+
 export const SvgScreen: React.FC<StackScreenProps<NavigatorParamList, "svg">> = observer(() => {
-  const [animationState, setAnimationState] = useState(MockAnimation.initialState)
   const isFocused = useIsFocused()
-  console.log("Render SVG")
+  const render = useRender()
+  const animationState = useConst(MockAnimation.initialState())
+
   const {
     leftPoint,
     rightPoint,
@@ -34,15 +44,27 @@ export const SvgScreen: React.FC<StackScreenProps<NavigatorParamList, "svg">> = 
     translateX,
   } = MockAnimation.computeFrameData(animationState)
 
+  // RENDER
   React.useEffect(() => {
     let cancel = false
     requestAnimationFrame(() => {
-      if (!cancel && isFocused)
-        setAnimationState(MockAnimation.updateAnimationState(animationState))
+      if (!cancel && isFocused) render()
     })
 
     return () => (cancel = true)
-  }, [animationState, isFocused])
+  }, [isFocused, render])
+
+  React.useEffect(() => {
+    let cancel = false
+
+    const loop = () => {
+      Object.assign(animationState, MockAnimation.updateAnimationState(animationState))
+      if (!cancel && isFocused) setTimeout(loop, 1000 / 100)
+    }
+    loop()
+
+    return () => (cancel = true)
+  }, [isFocused])
 
   return (
     <SafeAreaView>

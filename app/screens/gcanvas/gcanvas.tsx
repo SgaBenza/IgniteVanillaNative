@@ -43,7 +43,6 @@ export const GCanvasScreen: React.FC<StackScreenProps<NavigatorParamList, "gcanv
   const animationState = React.useRef(MockAnimation.initialState()).current
 
   const draw = () => {
-    console.log("Render GCanvas")
     // On Android, sometimes this.isGReactTextureViewReady is false e.g.
     // navigate from a canvas page into a drawer item page with
     // react-navigation on Android, the canvas page will be maintain
