@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { useState } from "react"
 import { View, SafeAreaView, ViewStyle } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
@@ -6,6 +6,7 @@ import Svg, { Circle, Path, G } from "react-native-svg"
 import { NavigatorParamList } from "../../navigators"
 import { line, curveMonotoneX } from "d3-shape"
 import { color, MockAnimation, vizHeight, vizWidth } from "../animation.mock"
+import { useIsFocused } from "@react-navigation/core"
 
 const SVG_STYLE: ViewStyle = {
   borderColor: "black",
@@ -21,9 +22,10 @@ const pathLine = line<{ x: number; y: number }>()
   .y((d) => d.y)
   .curve(curveMonotoneX)
 
-export const SvgScreen: FC<StackScreenProps<NavigatorParamList, "svg">> = observer(() => {
+export const SvgScreen: React.FC<StackScreenProps<NavigatorParamList, "svg">> = observer(() => {
   const [animationState, setAnimationState] = useState(MockAnimation.initialState)
-
+  const isFocused = useIsFocused()
+  console.log("Render SVG")
   const {
     leftPoint,
     rightPoint,
@@ -37,11 +39,12 @@ export const SvgScreen: FC<StackScreenProps<NavigatorParamList, "svg">> = observ
   React.useEffect(() => {
     let cancel = false
     requestAnimationFrame(() => {
-      if (!cancel) setAnimationState(MockAnimation.updateAnimationState(animationState))
+      if (!cancel && isFocused)
+        setAnimationState(MockAnimation.updateAnimationState(animationState))
     })
 
     return () => (cancel = true)
-  }, [animationState])
+  }, [animationState, isFocused])
 
   return (
     <SafeAreaView>

@@ -1,10 +1,13 @@
 import React from "react"
-import { View, StyleSheet, Dimensions, ViewStyle } from "react-native"
+import { View, ViewStyle } from "react-native"
 import { GCanvasView } from "@flyskywhy/react-native-gcanvas"
 import * as Canova from "canova"
 
 import { curveMonotoneX, line } from "d3-shape"
 import { color, MockAnimation, vizHeight, vizWidth } from "../animation.mock"
+import { StackScreenProps } from "@react-navigation/stack"
+import { NavigatorParamList } from "../../navigators"
+import { useIsFocused } from "@react-navigation/core"
 
 const WRAPPER_STYLE: ViewStyle = {
   height: "100%",
@@ -21,10 +24,12 @@ const pathLine = line<{ x: number; y: number }>()
   .y((d) => d.y)
   .curve(curveMonotoneX)
 
-export const GCanvasScreen = () => {
+export const GCanvasScreen: React.FC<StackScreenProps<NavigatorParamList, "gcanvas">> = () => {
   const isGReactTextureViewReady = React.useRef()
   const canvasRef = React.useRef<any>()
   const ctxRef = React.useRef<CanvasRenderingContext2D>()
+
+  const isFocused = useIsFocused()
 
   const initCanvas = (canvas) => {
     if (canvasRef.current) {
@@ -38,6 +43,7 @@ export const GCanvasScreen = () => {
   const animationState = React.useRef(MockAnimation.initialState()).current
 
   const draw = () => {
+    console.log("Render GCanvas")
     // On Android, sometimes this.isGReactTextureViewReady is false e.g.
     // navigate from a canvas page into a drawer item page with
     // react-navigation on Android, the canvas page will be maintain
@@ -117,12 +123,12 @@ export const GCanvasScreen = () => {
 
     const loop = () => {
       draw()
-      if (!cancel) requestAnimationFrame(loop)
+      if (!cancel && isFocused) requestAnimationFrame(loop)
     }
     loop()
 
     return () => (cancel = true)
-  }, [])
+  }, [isFocused])
 
   return (
     <View testID="WelcomeScreen" style={WRAPPER_STYLE}>
