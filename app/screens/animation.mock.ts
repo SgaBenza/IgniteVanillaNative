@@ -6,14 +6,16 @@ const { width } = Dimensions.get("window")
 
 const simplex = new SimplexNoise()
 
-const vizWidth = width
-const heightWidth = 200
+export const vizWidth = width
+export const vizHeight = 300
+
+const shapeHeight = 200
 
 const buildShape = (x: number, shapeWidth: number) => {
-  return (Math.sin(2 * Math.PI * (x / shapeWidth) + Math.PI / 2) * 0.5 + 0.5) * heightWidth
+  return (Math.sin(2 * Math.PI * (x / shapeWidth) + Math.PI / 2) * 0.5 + 0.5) * shapeHeight
 }
 
-const pointsAmount = 100
+const pointsAmount = 150
 const pointStep = vizWidth / pointsAmount
 
 const generatePoints = (shapeWidth: number, getY: (p: { x: number; y: number }) => number) =>
@@ -47,6 +49,7 @@ const repetitions = [
 export const color = {
   left: "#00F0FF",
   right: "#FF97F0",
+  track: "#C4C4C4",
 }
 
 interface AnimationState {

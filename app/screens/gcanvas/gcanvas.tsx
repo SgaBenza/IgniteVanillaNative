@@ -1,11 +1,20 @@
 import React from "react"
-import { View, StyleSheet, Dimensions } from "react-native"
+import { View, StyleSheet, Dimensions, ViewStyle } from "react-native"
 import { GCanvasView } from "@flyskywhy/react-native-gcanvas"
 import * as Canova from "canova"
 
 import { curveMonotoneX, line } from "d3-shape"
-import { color, MockAnimation } from "../animation.mock"
-const { width } = Dimensions.get("window")
+import { color, MockAnimation, vizHeight, vizWidth } from "../animation.mock"
+
+const WRAPPER_STYLE: ViewStyle = {
+  height: "100%",
+  justifyContent: "center",
+}
+
+const CANVAS_STYLE: ViewStyle = {
+  height: vizHeight,
+  width: vizWidth,
+}
 
 const pathLine = line<{ x: number; y: number }>()
   .x((d) => d.x)
@@ -39,7 +48,6 @@ export const GCanvasScreen = () => {
 
     const ctx = ctxRef.current
 
-    // if (ctx && AppState.currentState === "active") {
     if (ctx) {
       const {
         leftPoint,
@@ -58,7 +66,7 @@ export const GCanvasScreen = () => {
           (ctx) => {
             ctx.beginPath()
 
-            ctx.strokeStyle = "#C4C4C4"
+            ctx.strokeStyle = color.track
             ctx.lineWidth = 20
             pathLine.context(ctx)
             pathLine(track)
@@ -117,21 +125,12 @@ export const GCanvasScreen = () => {
   }, [])
 
   return (
-    <View testID="WelcomeScreen" style={styles.wrapper}>
+    <View testID="WelcomeScreen" style={WRAPPER_STYLE}>
       <GCanvasView
         onCanvasCreate={initCanvas}
         onIsReady={(value) => (isGReactTextureViewReady.current = value)}
-        style={styles.gcanvas}
+        style={CANVAS_STYLE}
       />
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  gcanvas: {
-    height: 500,
-    width,
-  },
-
-  wrapper: { top: 0 },
-})
