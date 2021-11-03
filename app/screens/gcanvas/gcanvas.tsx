@@ -1,50 +1,54 @@
 import React from "react"
-import { random, times } from "lodash-es"
+import { random, times, last } from "lodash-es"
 import { View, Text, StyleSheet, Dimensions, AppState } from "react-native"
 import { GCanvasView } from "@flyskywhy/react-native-gcanvas"
 import { TouchableOpacity } from "react-native-gesture-handler"
-
+import SimplexNoise from "simplex-noise"
 import * as Canova from "canova"
-import { scaleLinear } from "d3-scale"
+
 import { curveMonotoneX, line } from "d3-shape"
 const { height, width } = Dimensions.get("window")
 
-const size = 500
-const halfSize = size / 2
-const balancePillSize = { width: 200, height: 75, x: 150, y: 350 }
+const simplex = new SimplexNoise()
 
-const yScale = scaleLinear([0, 100, 250, 400, 500], [250, 210, 30, 210, 250])
+const vizWidth = width
+const heightWidth = 200
 
-function getYValue(y) {
-  return yScale(y)
+const buildShape = (x: number, shapeWidth) => {
+  return (Math.sin(2 * Math.PI * (x / shapeWidth) + Math.PI / 2) * 0.5 + 0.5) * heightWidth
 }
 
-const timesLength = 100
-const factor = size / timesLength
-const { perfect, left, right, pill } = {
-  perfect: times(timesLength).map((d) => {
-    const value = d * factor
-    return { x: value, y: getYValue(value) }
-  }),
-  left: times(timesLength).map((d) => {
-    const value = d * factor
-    return { x: value, y: getYValue(value) }
-  }),
-  right: times(timesLength).map((d) => {
-    const noisyOffset = Math.round(Math.random() * 50)
-    const sign = noisyOffset % 2 === 0 ? 1 : -1
-    const value = d * factor
-    return { x: value, y: getYValue(value) + noisyOffset * sign }
-  }),
-  pill: times(timesLength).map((_, i) => {
-    return { degrees: i === 0 ? 0 : random(-90, 90) }
-  }),
-}
+const pointsAmount = 100
+const pointStep = vizWidth / pointsAmount
+
+const generatePoints = (shapeWidth: number, getY: (p: { x: number; y: number }) => number) =>
+  times(shapeWidth / pointStep)
+    .map((x) => x * pointStep)
+    .map((x) => {
+      return { x, y: getY({ x, y: buildShape(x, shapeWidth) }) }
+    })
+
+const track = generatePoints(width, (p) => p.y)
+
+const repetitions = [
+  [
+    generatePoints(width, (p) => p.y + simplex.noise2D(p.x * 0.004 + 100, p.x * 0.004) * 30),
+    generatePoints(width, (p) => p.y + simplex.noise2D(p.x * 0.001, p.x * 0.004) * 30),
+  ],
+  [
+    generatePoints(width * 1.5, (p) => p.y + simplex.noise2D(p.x * 0.004 + 100, p.x * 0.004) * 30),
+    generatePoints(width * 1.5, (p) => p.y + simplex.noise2D(p.x * 0.001, p.x * 0.004) * 30),
+  ],
+  [
+    generatePoints(width * 0.8, (p) => p.y + simplex.noise2D(p.x * 0.001 + 100, p.x * 0.004) * 30),
+    generatePoints(width * 0.8, (p) => p.y + simplex.noise2D(p.x * 0.001, p.x * 0.004) * 30),
+  ],
+]
 
 const pathLine = line<{ x: number; y: number }>()
   .x((d) => d.x)
   .y((d) => d.y)
-const d = pathLine.curve(curveMonotoneX)
+  .curve(curveMonotoneX)
 
 export const GCanvasScreen = () => {
   const isGReactTextureViewReady = React.useRef()
@@ -60,7 +64,7 @@ export const GCanvasScreen = () => {
     ctxRef.current = canvasRef.current.getContext("2d")
   }
 
-  const drawState = React.useRef({ startTime: Date.now() }).current
+  const animationState = React.useRef({ pointIndex: 0, repetitionIndex: 0 }).current
 
   const draw = () => {
     // On Android, sometimes this.isGReactTextureViewReady is false e.g.
@@ -74,29 +78,69 @@ export const GCanvasScreen = () => {
     const ctx = ctxRef.current
 
     if (ctx && AppState.currentState === "active") {
+      const [left, right] = repetitions[animationState.repetitionIndex]
+
+      const leftPoint = left[animationState.pointIndex] ?? last(left)
+      const rightPoint = right[animationState.pointIndex] ?? last(right)
+      const trackPoint = track[animationState.pointIndex] ?? last(track)
+
+      const translateX = Math.max(0, animationState.pointIndex - track.length) * pointStep
+
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
+      Canova.draw(
+        ctx,
+        Canova.group({ y: 40, x: -translateX }, [
+          (ctx) => {
+            ctx.beginPath()
 
-      const time = Date.now() - drawState.startTime
-      // console.log("draw", time)
+            ctx.strokeStyle = "#C4C4C4"
+            ctx.lineWidth = 20
+            pathLine.context(ctx)
+            pathLine(track)
+            ctx.stroke()
+          },
 
-      const i = time * 0.004
+          (ctx) => {
+            ctx.beginPath()
 
-      const outerRadius = 60 + 20 * Math.sin(i * 0.5)
-      const cx = width / 2
-      const cy = canvasRef.current.height / 2
+            ctx.strokeStyle = "#00F0FF"
+            ctx.lineWidth = 4
+            pathLine.context(ctx)
+            pathLine(right.slice(0, animationState.pointIndex))
+            ctx.stroke()
+          },
 
-      Canova.draw(ctx, [
-        Canova.rect(0, 0, width, height, { stroke: "red", strokeWidth: 4 }),
-        Canova.circle(cx, cy, outerRadius, { stroke: "red", strokeWidth: 2 }),
-        Canova.circle(cx + Math.cos(i * 4) * outerRadius, cy + Math.sin(i) * outerRadius, 10, {
-          fill: "blue",
-        }),
-        Canova.circle(cx + Math.cos(i) * outerRadius, cy + Math.sin(i) * outerRadius, 10, {
-          fill: "pink",
-        }),
-      ])
+          (ctx) => {
+            ctx.beginPath()
 
-      // Canova.draw(ctx, (ctx) => {})
+            ctx.strokeStyle = "#FF97F0"
+            ctx.lineWidth = 4
+            pathLine.context(ctx)
+            pathLine(left.slice(0, animationState.pointIndex))
+            ctx.stroke()
+          },
+          Canova.circle(trackPoint.x, trackPoint.y, 6, {
+            fill: "white",
+          }),
+          Canova.circle(rightPoint.x, rightPoint.y, 6, {
+            stroke: "#00F0FF",
+            strokeWidth: 4,
+            fill: "black",
+          }),
+          Canova.circle(leftPoint.x, leftPoint.y, 6, {
+            stroke: "#FF97F0",
+            strokeWidth: 4,
+            fill: "black",
+          }),
+        ]),
+      )
+
+      if (animationState.pointIndex >= left.length && animationState.pointIndex >= right.length) {
+        animationState.pointIndex = 0
+        animationState.repetitionIndex = (animationState.repetitionIndex + 1) % repetitions.length
+      } else {
+        animationState.pointIndex++
+      }
     }
   }
 
