@@ -38,7 +38,7 @@ const AppStack = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         tabBarIcon: () => null,
       }}
       initialRouteName="svg"
