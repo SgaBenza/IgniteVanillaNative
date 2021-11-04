@@ -1,15 +1,14 @@
 import React, { useState } from "react"
-import { View, SafeAreaView, ViewStyle } from "react-native"
+import { View, ViewStyle } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { observer } from "mobx-react-lite"
 import Svg, { Circle, Path, G } from "react-native-svg"
-import Video from "react-native-video"
+
 import { NavigatorParamList } from "../../navigators"
 import { line, curveMonotoneX } from "d3-shape"
-import { color, MockAnimation, vizHeight, vizWidth } from "../animation.mock"
+import { color, MockAnimation, updateRateHz, vizHeight, vizWidth } from "../animation.mock"
 import { useIsFocused } from "@react-navigation/core"
-
-console.log("video: ", require("../bg-video.mov"))
+import { VideoBackground } from "../../components/video-background/video-background"
 
 const SVG_STYLE: ViewStyle = {
   width: vizWidth,
@@ -18,26 +17,10 @@ const SVG_STYLE: ViewStyle = {
 
 const WRAPPER_STYLE: ViewStyle = { height: "100%", justifyContent: "center" }
 
-const VIDEO_STYLE: ViewStyle = {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-}
 export const SvgScreen: React.FC<StackScreenProps<NavigatorParamList, "svg">> = observer(() => {
   return (
     <View>
-      <Video
-        source={require("../bg-video.mov")}
-        style={VIDEO_STYLE as any}
-        controls={false}
-        playInBackground
-        muted
-        repeat
-        disableFocus
-        resizeMode="cover"
-      />
+      <VideoBackground />
 
       <View style={WRAPPER_STYLE}>
         <SvgAnimation />
@@ -81,7 +64,6 @@ const SvgAnimation = () => {
     requestAnimationFrame(() => {
       if (!cancel && isFocused) render()
     })
-
     return () => (cancel = true)
   }, [isFocused, render])
 
@@ -90,7 +72,7 @@ const SvgAnimation = () => {
 
     const loop = () => {
       Object.assign(animationState, MockAnimation.updateAnimationState(animationState))
-      if (!cancel && isFocused) setTimeout(loop, 1000 / 100)
+      if (!cancel && isFocused) setTimeout(loop, 1000 / updateRateHz)
     }
     loop()
 

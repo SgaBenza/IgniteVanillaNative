@@ -15,8 +15,9 @@ const buildShape = (x: number, shapeWidth: number) => {
   return (Math.sin(2 * Math.PI * (x / shapeWidth) + Math.PI / 2) * 0.5 + 0.5) * shapeHeight
 }
 
-const pointsAmount = 150
+const pointsAmount = 100
 const pointStep = vizWidth / pointsAmount
+export const updateRateHz = 50
 
 const generatePoints = (shapeWidth: number, getY: (p: { x: number; y: number }) => number) =>
   times(shapeWidth / pointStep)
