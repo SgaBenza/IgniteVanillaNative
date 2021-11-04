@@ -4,10 +4,11 @@ import { GCanvasView } from "@flyskywhy/react-native-gcanvas"
 import * as Canova from "canova"
 
 import { curveMonotoneX, line } from "d3-shape"
-import { color, MockAnimation, vizHeight, vizWidth } from "../animation.mock"
+import { color, MockAnimation, updateRateHz, vizHeight, vizWidth } from "../animation.mock"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 import { useIsFocused } from "@react-navigation/core"
+import { VideoBackground } from "../../components/video-background/video-background"
 
 const WRAPPER_STYLE: ViewStyle = {
   height: "100%",
@@ -112,8 +113,6 @@ export const GCanvasScreen: React.FC<StackScreenProps<NavigatorParamList, "gcanv
           }),
         ]),
       )
-
-      Object.assign(animationState, MockAnimation.updateAnimationState(animationState))
     }
   }
 
@@ -129,8 +128,21 @@ export const GCanvasScreen: React.FC<StackScreenProps<NavigatorParamList, "gcanv
     return () => (cancel = true)
   }, [isFocused])
 
+  React.useEffect(() => {
+    let cancel = false
+
+    const loop = () => {
+      Object.assign(animationState, MockAnimation.updateAnimationState(animationState))
+      if (!cancel && isFocused) setTimeout(loop, 1000 / updateRateHz)
+    }
+    loop()
+
+    return () => (cancel = true)
+  }, [isFocused])
+
   return (
     <View testID="WelcomeScreen" style={WRAPPER_STYLE}>
+      <VideoBackground />
       <GCanvasView
         onCanvasCreate={initCanvas}
         onIsReady={(value) => (isGReactTextureViewReady.current = value)}
