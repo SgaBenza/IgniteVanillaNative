@@ -54,7 +54,7 @@ const SvgAnimation = () => {
     trackPoint,
     leftVisiblePoints,
     rightVisiblePoints,
-    track,
+    trackVisiblePoints,
     translateX,
   } = MockAnimation.computeFrameData(animationState)
 
@@ -82,7 +82,12 @@ const SvgAnimation = () => {
   return (
     <Svg viewBox={`0 0 ${vizWidth} ${vizHeight}`} style={SVG_STYLE}>
       <G translateX={-translateX} translateY={40}>
-        <Path d={pathLine(track)} stroke={color.track} strokeWidth={20} opacity={0.8} />
+        <Path
+          d={pathLine(trackVisiblePoints)}
+          stroke={color.track}
+          strokeWidth={20}
+          opacity={0.8}
+        />
         <Path d={pathLine(leftVisiblePoints)} stroke={color.left} strokeWidth={4} />
         <Path d={pathLine(rightVisiblePoints)} stroke={color.right} strokeWidth={4} />
 

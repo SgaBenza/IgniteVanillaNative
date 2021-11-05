@@ -62,7 +62,7 @@ export const GCanvasScreen: React.FC<StackScreenProps<NavigatorParamList, "gcanv
         leftVisiblePoints,
         rightVisiblePoints,
         translateX,
-        track,
+        trackVisiblePoints,
       } = MockAnimation.computeFrameData(animationState)
 
       ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
@@ -75,7 +75,7 @@ export const GCanvasScreen: React.FC<StackScreenProps<NavigatorParamList, "gcanv
             ctx.strokeStyle = color.track
             ctx.lineWidth = 20
             pathLine.context(ctx)
-            pathLine(track)
+            pathLine(trackVisiblePoints)
             ctx.stroke()
           },
 

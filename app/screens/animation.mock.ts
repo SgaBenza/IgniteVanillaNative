@@ -59,6 +59,7 @@ interface AnimationState {
 
   leftVisiblePoints: Point[]
   rightVisiblePoints: Point[]
+  trackVisiblePoints: Point[]
 }
 
 export const MockAnimation = {
@@ -67,6 +68,7 @@ export const MockAnimation = {
     repetitionIndex: 0,
     leftVisiblePoints: [repetitions[0][0][0]],
     rightVisiblePoints: [repetitions[0][1][0]],
+    trackVisiblePoints: track.slice(),
   }),
 
   computeFrameData: (state: AnimationState) => {
@@ -85,7 +87,7 @@ export const MockAnimation = {
       translateX,
       rightVisiblePoints: state.rightVisiblePoints,
       leftVisiblePoints: state.leftVisiblePoints,
-      track,
+      trackVisiblePoints: state.trackVisiblePoints,
     }
   },
 
@@ -98,6 +100,7 @@ export const MockAnimation = {
 
     if (newState.pointIndex >= left.length && newState.pointIndex >= right.length) {
       // Change repetition
+      newState.trackVisiblePoints = track.slice()
       newState.pointIndex = 0
       newState.repetitionIndex = (newState.repetitionIndex + 1) % repetitions.length
       newState.leftVisiblePoints = [repetitions[newState.repetitionIndex][0][0]]
@@ -115,6 +118,13 @@ export const MockAnimation = {
         0,
         Math.max(0, newState.rightVisiblePoints.length - pointsAmount),
       )
+
+      if (newState.pointIndex >= newState.trackVisiblePoints.length) {
+        newState.trackVisiblePoints.push({
+          x: left[newState.pointIndex].x,
+          y: last(track).y,
+        })
+      }
     }
 
     return newState
